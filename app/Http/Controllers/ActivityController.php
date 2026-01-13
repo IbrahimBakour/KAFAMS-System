@@ -3,26 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
 {
-    // Display all activities
+    // Display all activities/quizzes
     public function index()
     {
+        // Fetch both old activities and new quizzes
         $activities = Activity::all();
+        $quizzes = Quiz::with(['questions', 'admin'])->latest()->get();
 
         $activities->each(function ($activity) {
             $activity->level = rand(1, 5); // Generate a random level
         });
-        
-        return view('activity.index', compact('activities'));
+
+        return view('activity.index', compact('activities', 'quizzes'));
     }
 
     // Show form to create a new activity
     public function create()
     {
-        return view('activity.create');
+        // Reuse the unified quiz creation experience
+        return redirect()->route('quizzes.create');
     }
 
     // Store a newly created activity
