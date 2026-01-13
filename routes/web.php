@@ -8,6 +8,7 @@ use App\Http\Controllers\profileController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\QuizController;
 
 
 Route::get('/', function () {
@@ -59,3 +60,21 @@ Route::get('/activities/{activity}/edit', [ActivityController::class, 'edit'])->
 Route::put('/activities/{activity}', [ActivityController::class, 'update'])->middleware('can:admin')->name('activities.update');
 Route::delete('/activities/{activity}', [ActivityController::class, 'destroy'])->middleware('can:admin')->name('activities.destroy');
 Route::get('/activities/{activity}', [ActivityController::class, 'show'])->name('activities.show');
+
+// Quiz Management Routes (Admin)
+Route::middleware(['auth'])->group(function () {
+    Route::get('/quizzes', [QuizController::class, 'index'])->name('quizzes.index');
+    Route::get('/quizzes/create', [QuizController::class, 'create'])->name('quizzes.create');
+    Route::post('/quizzes', [QuizController::class, 'store'])->name('quizzes.store');
+    Route::get('/quizzes/{quiz}/edit', [QuizController::class, 'edit'])->name('quizzes.edit');
+    Route::put('/quizzes/{quiz}', [QuizController::class, 'update'])->name('quizzes.update');
+    Route::delete('/quizzes/{quiz}', [QuizController::class, 'destroy'])->name('quizzes.destroy');
+    Route::get('/quizzes/{quiz}', [QuizController::class, 'show'])->name('quizzes.show');
+    Route::post('/quizzes/{quiz}/toggle-status', [QuizController::class, 'toggleStatus'])->name('quizzes.toggleStatus');
+
+    // Student Quiz Routes
+    Route::get('/student/quizzes', [QuizController::class, 'availableQuizzes'])->name('student.quizzes');
+    Route::get('/student/quizzes/{quiz}/start', [QuizController::class, 'startQuiz'])->name('quizzes.start');
+    Route::post('/student/quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz'])->name('quizzes.submit');
+    Route::get('/student/quizzes/{quiz}/results', [QuizController::class, 'viewResults'])->name('quizzes.results');
+});

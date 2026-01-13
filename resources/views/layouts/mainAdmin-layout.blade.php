@@ -112,6 +112,8 @@
             Profile</a>
         <a href="{{ route('activities.index') }}"
             class="{{ Request::routeIs('activities.index') ? 'active' : '' }}">KAFA Activities</a>
+        <a href="{{ route('quizzes.index') }}"
+            class="{{ Request::routeIs('quizzes.*') ? 'active' : '' }}">Quiz Management</a>
         <a href="{{ route('results.index') }}" class="{{ Request::routeIs('results.index') ? 'active' : '' }}">Students
             Results</a>
         <a href="{{ route('bulletin.indexBulletinAdmin') }}"
