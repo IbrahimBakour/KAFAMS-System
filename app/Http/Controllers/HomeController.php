@@ -67,6 +67,7 @@ class HomeController extends Controller
 
             $data = [];
             $labels = [];
+            $assessmentTypes = ['N/A', 'N/A']; // Initialize with default values
 
             // Loop through each subject and get the last two assessments
             foreach ($groupedResults as $subject => $subjectResults) {
@@ -77,9 +78,11 @@ class HomeController extends Controller
                 if ($latestTwoAssessments->count() == 2) {
                     $marks = $latestTwoAssessments->pluck('marks')->toArray();
                     $assessmentTypes = $latestTwoAssessments->pluck('assessment_type')->toArray();
-                } else {
+                } elseif ($latestTwoAssessments->count() == 1) {
                     $marks = [0, $latestTwoAssessments->first()->marks]; // If there's only one assessment
-                    $assessmentTypes = [$latestTwoAssessments->first()->assessment_type, 'N/A'];
+                    $assessmentTypes = ['N/A', $latestTwoAssessments->first()->assessment_type];
+                } else {
+                    $marks = [0, 0]; // No assessments
                 }
 
                 // Add data for the graph
