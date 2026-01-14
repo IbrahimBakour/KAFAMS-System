@@ -9,6 +9,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\QuizController;
+use App\Http\Controllers\Dashboard\DashboardController;
 
 
 Route::get('/', function () {
@@ -77,4 +78,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/student/quizzes/{quiz}/start', [QuizController::class, 'startQuiz'])->name('quizzes.start');
     Route::post('/student/quizzes/{quiz}/submit', [QuizController::class, 'submitQuiz'])->name('quizzes.submit');
     Route::get('/student/quizzes/{quiz}/results', [QuizController::class, 'viewResults'])->name('quizzes.results');
+
+
+    // Dashboard Route
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Optional stricter role routes
+    Route::get('/dashboard/parent',  [DashboardController::class, 'index'])->middleware('role:PARENT');
+    Route::get('/dashboard/teacher', [DashboardController::class, 'index'])->middleware('role:TEACHER');
+    Route::get('/dashboard/admin',   [DashboardController::class, 'index'])->middleware('role:KAFA_ADMIN,MUIP_ADMIN');
+
+    // Existing Profile routes
+    Route::get('/profiles', [profileController::class, 'index'])->name('profile.index');
+    Route::get('/profiles/create', [profileController::class, 'create'])->name('profile.create');
+    Route::post('/profiles', [profileController::class, 'store'])->name('profile.store');
+    Route::get('/profiles/{id}', [profileController::class, 'show'])->name('profile.view');
+    Route::get('/profiles/{id}/edit', [profileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profiles/{id}', [profileController::class, 'update'])->name('profile.update');
+    Route::delete('/profiles/{id}', [profileController::class, 'destroy'])->name('profile.destroy');
 });
