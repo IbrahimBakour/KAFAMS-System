@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Bulletins extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+    'bulletin_title',
+    'bulletin_image',
+    'bulletin_desc',
+    'bulletin_category',
+    'status',
+    'created_by',
+
+    // 🔥 DATES
+    'event_date',
+    'event_time',
+    'start_date',
+    'end_date',
+    'news_date',
+];
+
+}
+
